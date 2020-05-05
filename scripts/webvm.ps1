@@ -2,3 +2,5 @@
 param (
     [string]$vmwebpip
 )
+
+Install-WindowsFeature -name Web-Server -IncludeManagementTools
