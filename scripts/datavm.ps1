@@ -79,3 +79,20 @@ $xml.Save($path)
 
 # Restart Service
 Restart-Service "FileZilla Server"
+
+#Download iperfclientscript
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/swiftsolves-msft/AdaptiveNetworkLab/master/scripts/iperf3runtoweb.ps1" -OutFile "C:\Temp\iperf3runtoweb.ps1"
+
+# Create the Scheduled Task for the client to iperf3 tests
+$date = Get-Date
+$date = $date.AddMinutes(2)
+$action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe' -Argument 'C:\Temp\iperf3runtoweb.ps1'
+$trigger = New-ScheduledTaskTrigger -Daily -At 12am
+$settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -WakeToRun
+
+Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To WEBVM 19" -RunLevel Highest -User 'AzureDemoUser' -Password 'Welcome123!'
+
+$STModify = Get-ScheduledTask -TaskName "Generate Net Traffic"
+$STModify.Triggers.repetition.Duration = 'P1D'
+$STModify.Triggers.repetition.Interval = 'PT5M'
+$STModify | Set-ScheduledTask -User 'AzureDemoUser' -Password 'Welcome123!'
