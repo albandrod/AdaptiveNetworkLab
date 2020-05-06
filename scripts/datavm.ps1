@@ -47,6 +47,9 @@ $ASRPIP = Invoke-RestMethod -Method GET -Uri http://169.254.169.254/metadata/ins
 #Opbtain Public IP Address assigned
 $ASRPIP = $ASRPIP.network.interface.ipv4.ipaddress.publicipaddress
 
+# Wait for FileZilla Install
+Start-Sleep -Seconds 120
+
 #Create a backup file
 Copy-Item -Path "C:\Program Files (x86)\FileZilla Server\fileZilla Server.xml" -Destination "C:\Program Files (x86)\FileZilla Server\FileZilla Server.xml.bkp" -Force
 
