@@ -23,6 +23,11 @@ Invoke-WebRequest -Uri "https://iperf.fr/download/windows/iperf-3.1.3-win64.zip"
 New-Item -ItemType Directory -Path C:\Temp\iperf -ErrorAction SilentlyContinue
 Expand-Archive "C:\Temp\iperf.zip" -DestinationPath C:\temp\iperf
 
+# Execute iperf as a process as a listner on 19 to mimic Char Generator port
+cd /
+cd "C:\Temp\iperf\iperf-3.1.3-win64"
+.\iperf3.exe -p 19 -s -D -I C:\Temp\chargenpid.txt
+
 # Disable IE Enhanced Configuration
 function Disable-ieESC {
     $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
