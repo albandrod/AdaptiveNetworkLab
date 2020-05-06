@@ -10,7 +10,7 @@
       }
     },
     "adminPassword": {
-      "type": "securerstring",
+      "type": "securestring",
       "metadata": {
         "description": "Password for the Virtual Machine."
       }
