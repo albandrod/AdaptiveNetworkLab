@@ -20,7 +20,7 @@ Expand-Archive "C:\Temp\iperf.zip" -DestinationPath C:\temp\iperf
 # Execute iperf as a process as a listner on 1433 to mimic SQL port
 cd /
 cd "C:\Temp\iperf\iperf-3.1.3-win64"
-.\iperf3.exe -p 2049 -s -D -I C:\Temp\sqlpid.txt
+.\iperf3.exe -p 1433 -s -D -I C:\Temp\sqlpid.txt
 
 # Disable IE Enhanced Configuration
 function Disable-ieESC {
