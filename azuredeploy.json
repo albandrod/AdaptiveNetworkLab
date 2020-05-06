@@ -4,15 +4,23 @@
   "parameters": {
     "adminUsername": {
       "type": "string",
-      "defaultValue": "AzureDemo",
+      "defaultValue": "AzureDemoUser",
       "metadata": {
         "description": "Username for the Virtual Machine."
       }
     },
     "adminPassword": {
-      "type": "securestring",
+      "defaultValue": "Welcome123!",
+      "type": "string",
       "metadata": {
         "description": "Password for the Virtual Machine."
+      }
+    },
+    "altLoc": {
+      "type": "string",
+      "defaultValue": "West US",
+      "metadata": {
+        "description": "Alternate location for 2nd VNET and FS,DC VM"
       }
     }
   },
@@ -22,6 +30,9 @@
     "nicNameWeb": "WEBNic",
     "nicNameData": "DATANic",
     "addressPrefix": "10.0.0.0/20",
+    "addressPrefixAlt": "172.16.0.0/20",
+    "subnetNameShared": "SERVICES",
+    "subnetPrefixShared": "172.16.1.0/24",
     "subnetNameData": "DATA",
     "subnetPrefixData": "10.0.1.0/24",
     "subnetNameApp": "APP",
@@ -35,6 +46,7 @@
     "vmNameWeb": "WEBVM",
     "vmNameData": "DATAVM",
     "virtualNetworkName": "LAB-VNET",
+    "virtualNetworkNameAlt": "SHARED-VNET",
     "publicIPAddressNameWeb": "WEBPIP",
     "publicIPAddressNameData": "DATAPIP",
     "vmdatapip": "1.1.1.1",
@@ -58,6 +70,48 @@
       "properties": {
         "publicIPAllocationMethod": "Dynamic"
       }
+    },
+    {
+      "apiVersion": "2016-09-01",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[variables('virtualNetworkNameAlt')]",
+      "location": "[parameters('altLoc')]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('addressPrefixAlt')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[variables('subnetNameShared')]",
+            "properties": {
+              "addressPrefix": "[variables('subnetPrefixShared')]"
+            }
+          }
+        ]
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-06-01",
+          "type": "virtualNetworkPeerings",
+          "name": "LAB-VNET-TO-SHARED-VNET",
+          "location": "[parameters('altLoc')]",
+          "dependsOn": [
+            "[variables('virtualNetworkName')]",
+            "[variables('virtualNetworkNameAlt')]"
+          ],
+            "properties": {
+            "allowVirtualNetworkAccess": "true",
+            "allowForwardedTraffic": "true",
+            "allowGatewayTransit": "false",
+            "useRemoteGateways": "false",
+            "remoteVirtualNetwork": {
+              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]"
+            }
+          }
+        }
+      ]
     },
     {
       "apiVersion": "2016-09-01",
@@ -96,7 +150,28 @@
             }
           }
         ]
-      }
+      },
+      "resources": [
+        {
+          "apiVersion": "2016-06-01",
+          "type": "virtualNetworkPeerings",
+          "name": "SHARED-VNET-TO-LAB-VNET",
+          "location": "[resourceGroup().location]",
+          "dependsOn": [
+            "[variables('virtualNetworkName')]",
+            "[variables('virtualNetworkNameAlt')]"
+          ],
+            "properties": {
+            "allowVirtualNetworkAccess": "true",
+            "allowForwardedTraffic": "true",
+            "allowGatewayTransit": "false",
+            "useRemoteGateways": "false",
+            "remoteVirtualNetwork": {
+              "id": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkNameAlt'))]"
+            }
+          }
+        }
+      ]
     },
     {
       "name": "DATANSG",
