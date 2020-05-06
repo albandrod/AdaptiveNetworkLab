@@ -7,7 +7,7 @@ param (
 Install-WindowsFeature -name Web-Server -IncludeManagementTools
 
 # Modify listening port to 8089
-Set-WebBinding -Name 'Default Web Site' -BindingInformation "*:80:" -PropertyName Port -Value 8089
+# Set-WebBinding -Name 'Default Web Site' -BindingInformation "*:80:" -PropertyName Port -Value 8089
 
 
 # Create temp directory for downloaded files
