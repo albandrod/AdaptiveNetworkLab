@@ -10,7 +10,7 @@
       }
     },
     "adminPassword": {
-      "defaultValue": "Welcome123!!",
+      "defaultValue": "Welcome123!",
       "type": "string",
       "metadata": {
         "description": "Password for the Virtual Machine."
@@ -187,6 +187,19 @@
               "sourceAddressPrefix": "*",
               "protocol": "Tcp",
               "destinationPortRange": "3389",
+              "access": "Allow",
+              "direction": "Inbound",
+              "sourcePortRange": "*",
+              "destinationAddressPrefix": "*"
+            }
+          },
+          {
+            "name": "default-allow-ftp",
+            "properties": {
+              "priority": 1010,
+              "sourceAddressPrefix": "*",
+              "protocol": "Tcp",
+              "destinationPortRange": "21",
               "access": "Allow",
               "direction": "Inbound",
               "sourcePortRange": "*",
