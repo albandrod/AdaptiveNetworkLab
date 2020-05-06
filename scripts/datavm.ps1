@@ -8,7 +8,7 @@ param (
 New-Item -ItemType Directory -Path C:\Temp -ErrorAction SilentlyContinue
 
 #download FileZilla Server Setup
-Invoke-WebRequest -Uri "https://dl3.cdn.filezilla-project.org/server/FileZilla_Server-0_9_60_2.exe?h=-bHapoYzS9xZhsW53Bi1dg&x=1588716262" -OutFile "C:\Temp\filezillaserver.exe"
+Invoke-WebRequest -Uri "https://dl3.cdn.filezilla-project.org/server/FileZilla_Server-0_9_60_2.exe?h=oIa-aSu6lbMgd6gPSawDwg&x=1588730979" -OutFile "C:\Temp\filezillaserver.exe"
 
 #Download Iperf
 Invoke-WebRequest -Uri "https://iperf.fr/download/windows/iperf-3.1.3-win64.zip" -OutFile "C:\Temp\iperf.zip"
