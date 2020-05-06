@@ -7,6 +7,8 @@ param (
 # Create temp directory for downloaded files
 New-Item -ItemType Directory -Path C:\Temp -ErrorAction SilentlyContinue
 
+Start-Transcript -Path "C:\Temp\transcriptlogs.txt" -NoClobber
+
 #download FileZilla Server Setup
 Invoke-WebRequest -Uri "https://azuworkshop.blob.core.windows.net/adaptivenetworklab/FileZilla_Server-0_9_60_2.exe" -OutFile "C:\Temp\filezillaserver.exe"
 
@@ -90,9 +92,12 @@ $action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShel
 $trigger = New-ScheduledTaskTrigger -Daily -At 12am
 $settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -WakeToRun
 
-Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To WEBVM 19" -RunLevel Highest -User 'AzureDemoUser' -Password 'Welcome123!!'
+Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To WEBVM 19" -RunLevel Highest -User 'AzureDemoUser' -Password 'Welcome123!!' -Debug
 
 $STModify = Get-ScheduledTask -TaskName "Generate Net Traffic"
 $STModify.Triggers.repetition.Duration = 'P1D'
 $STModify.Triggers.repetition.Interval = 'PT5M'
-$STModify | Set-ScheduledTask -User 'AzureDemoUser' -Password 'Welcome123!!'
+$STModify | Set-ScheduledTask -User 'AzureDemoUser' -Password 'Welcome123!!' -Debug
+
+#Stop Logging
+Stop-Transcript
