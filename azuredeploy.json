@@ -10,7 +10,7 @@
       }
     },
     "adminPassword": {
-      "defaultValue": "Welcome123!",
+      "defaultValue": "Welcome123!!",
       "type": "string",
       "metadata": {
         "description": "Password for the Virtual Machine."
