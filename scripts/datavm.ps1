@@ -51,6 +51,9 @@ Copy-Item -Path "C:\Program Files (x86)\FileZilla Server\fileZilla Server.xml" -
 # path of XML config for FileZilla Server
 $path = 'C:\Program Files (x86)\FileZilla Server\fileZilla Server.xml'
 
+# Download Modified FileZilla Server Configuration for Passive FTP.
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/swiftsolves-msft/AdaptiveNetworkLab/master/scripts/FileZilla%20Server.xml" -OutFile $path
+
 # Obtain XML config as a object 
 [xml]$xml = (Get-Content $path)
 
