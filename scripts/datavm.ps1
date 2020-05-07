@@ -92,12 +92,9 @@ $action = New-ScheduledTaskAction -Execute 'C:\Windows\System32\WindowsPowerShel
 $trigger = New-ScheduledTaskTrigger -Daily -At 12am
 $settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -WakeToRun
 
-Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To WEBVM 19" -RunLevel Highest -User 'System' -Debug
+Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To WEBVM 19" -RunLevel Highest -User 'System'
 
 $STModify = Get-ScheduledTask -TaskName "Generate Net Traffic"
 $STModify.Triggers.repetition.Duration = 'P1D'
 $STModify.Triggers.repetition.Interval = 'PT5M'
-$STModify | Set-ScheduledTask -User 'System' -Debug
-
-#Stop Logging
-Stop-Transcript
+$STModify | Set-ScheduledTask -User 'System'
