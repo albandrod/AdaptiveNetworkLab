@@ -55,5 +55,6 @@ $settings = New-ScheduledTaskSettingsSet -Hidden -AllowStartIfOnBatteries -DontS
 Register-ScheduledTask -Action $action -Trigger $trigger -Settings $settings -TaskName "Generate Net Traffic" -Description "Generate Network Traffic To DATAVM 1433" -RunLevel Highest -User 'System'
 
 $STModify = Get-ScheduledTask -TaskName "Generate Net Traffic"
+$STModify.Triggers.repetition.Duration = 'P1D'
 $STModify.Triggers.repetition.Interval = 'PT5M'
 $STModify | Set-ScheduledTask -User 'System'
